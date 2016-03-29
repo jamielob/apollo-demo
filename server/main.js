@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
+import proxyMiddleware from 'http-proxy-middleware';
 
-Meteor.startup(() => {
-  // code to run on server at startup
-});
+WebApp.rawConnectHandlers.use(proxyMiddleware('http://localhost:3000/graphql'));
