@@ -21,6 +21,7 @@
     "react-tap-event-plugin": "^0.2.2",
     "redux": "^3.3.1",
     "request-promise": "^2.0.1",
-    "widgetizer-express": "^0.5.1"
+    "widgetizer-express": "^0.5.1",
+    "graphql": "0.5.0-beta.1"
   }
 }
