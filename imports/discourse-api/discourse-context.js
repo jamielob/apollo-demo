@@ -132,6 +132,7 @@ export class DiscourseContext {
       });
     }).then((res) => {
       if (res.body.error) {
+        console.log('yup, there it is.');
         throw new Error(res.body.error);
       }
       return res.body.post;

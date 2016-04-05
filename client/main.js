@@ -98,21 +98,27 @@ const FeedPage = ({ page }) => (
   </List>
 );
 
-const Feed = ({ params, data, loading }) => (
-  <div>
-    <Tabs
-      onChange={handleRouteChange}
-      value={params.type}
-    >
-      <Tab label="Latest" value={'latest'} />
-      <Tab label="New" value={'new'} />
-      <Tab label="Unread" value={'unread'} />
-      <Tab label="Top" value={'top'} />
-    </Tabs>
-    { loading && 'Loading...' }
-    { !loading && data.root[params.type].pages.map((page) => <FeedPage page={page} />) }
-  </div>
-);
+const Feed = ({ params, data, loading, loginToken }) => {
+  const needsLogin = !loginToken && _.includes(['new', 'unread'], params.type);
+
+  return (
+    <div>
+      <Tabs
+        onChange={handleRouteChange}
+        value={params.type}
+      >
+        <Tab label="Latest" value={'latest'} />
+        <Tab label="New" value={'new'} />
+        <Tab label="Unread" value={'unread'} />
+        <Tab label="Top" value={'top'} />
+      </Tabs>
+      { loading && 'Loading...' }
+      { needsLogin && <div className="needs-login">Please log in to see this page.</div> }
+      { !loading && !needsLogin &&
+        data.root[params.type].pages.map((page) => <FeedPage page={page} />) }
+    </div>
+  );
+}
 
 const FeedWithData = createContainer({
   getQuery: ({ params, loginToken }) => {
@@ -142,16 +148,16 @@ function postHTML(post) {
 }
 
 const Post = ({ post }) => (
-  <ListItem
-    primaryText={<div dangerouslySetInnerHTML={postHTML(post)} />}
-    style={{ borderBottom: '1px solid #ccc' }}
-  />
+  <div className="post">
+    <h3>{post.username}</h3>
+    <div className="post-content" dangerouslySetInnerHTML={postHTML(post)} />
+  </div>
 );
 
 const PostsPage = ({ page }) => (
-  <List>
+  <div>
     { page.posts && page.posts.map((post) => <Post post={post} />) }
-  </List>
+  </div>
 );
 
 class TopicLoaded extends React.Component {
@@ -160,12 +166,12 @@ class TopicLoaded extends React.Component {
 
     client.queryManager.mutate({
       mutation: `
-        mutation postReply($input: Object) {
+        mutation postReply($token: String!, $topic_id: ID!, $category_id: ID!, $raw: String!) {
           createPost(
-            token: $input.token
-            topic_id: $input.topic_id
-            category: $input.category_id
-            raw: $input.raw
+            token: $token
+            topic_id: $topic_id
+            category: $category_id
+            raw: $raw
           ) {
             id
             cooked
@@ -173,11 +179,36 @@ class TopicLoaded extends React.Component {
         }
       `,
       variables: {
-        input: {
-
-        }
+        token: this.props.loginToken,
+        topic_id: this.props.data.root.oneTopic.id,
+        category_id: this.props.data.root.oneTopic.category_id,
+        raw: value,
       }
-    })
+    }).then((response) => {
+      console.log(response);
+    });
+  }
+
+  renderReplyBox() {
+    if (this.props.loginToken) {
+      return (
+        <div>
+          <TextField
+            hintText="Reply text..."
+            multiLine={true}
+            rows={2}
+            rowsMax={4}
+            fullWidth={true}
+            ref={(c) => this._input = c}
+          />
+          <RaisedButton primary={true} label="Post reply" onClick={this.submitReply.bind(this)}/>
+        </div>
+      );
+    } else {
+      return (
+        <div>Please log in to post a reply.</div>
+      )
+    }
   }
 
   render() {
@@ -187,23 +218,15 @@ class TopicLoaded extends React.Component {
       <div>
         <h1>{data.root.oneTopic.title}</h1>
         { data.root.oneTopic.posts.pages.map((page) => <PostsPage page={page} />) }
-        <TextField
-          hintText="Reply text..."
-          multiLine={true}
-          rows={2}
-          rowsMax={4}
-          fullWidth={true}
-          ref={(c) => this._input = c}
-        />
-        <RaisedButton primary={true} label="Post reply" onClick={this.submitReply.bind(this)}/>
+        { this.renderReplyBox() }
       </div>
     );
   }
 }
 
-const Topic = ({ data, loading }) => (
+const Topic = ({ data, loading, loginToken }) => (
   <div>
-    { loading ? 'Loading...' : <TopicLoaded data={data} /> }
+    { loading ? 'Loading...' : <TopicLoaded data={data} loginToken={loginToken} /> }
   </div>
 )
 
@@ -215,10 +238,13 @@ const TopicWithData = createContainer({
       {
         root${maybeLoginToken} {
           oneTopic(id: "${params.id}") {
+            id
+            category_id
             title
             posts {
               pages {
                 posts {
+                  username
                   score
                   cooked
                 }
