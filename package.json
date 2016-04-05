@@ -6,10 +6,10 @@
   },
   "dependencies": {
     "apollo-client": "^0.0.2",
+    "apollo-server": "^0.0.3",
     "cls-bluebird": "^1.0.1",
-    "dataloader": "^1.1.0",
+    "dataloader": "^1.2.0",
     "express": "^4.13.4",
-    "express-graphql": "^0.4.13",
     "http-proxy-middleware": "^0.13.0",
     "material-ui": "^0.14.4",
     "meteor-node-stubs": "~0.2.0",
@@ -20,6 +20,7 @@
     "react-router": "^2.0.1",
     "react-tap-event-plugin": "^0.2.2",
     "redux": "^3.3.1",
-    "request-promise": "^2.0.1"
+    "request-promise": "^2.0.1",
+    "widgetizer-express": "^0.5.1"
   }
 }

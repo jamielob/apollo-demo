@@ -1,5 +1,5 @@
 import { generateSchema } from 'apollo-server';
-import graphqlHTTP from 'express-graphql';
+import graphqlHTTP from 'widgetizer-express';
 import express from 'express';
 import resolveFunctions from '../discourse-api/schema.js';
 // imports/discourse-api/schema.gql is also used...
