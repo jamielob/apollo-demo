@@ -39,7 +39,6 @@ const resolvers = {
 
   /* PostListPage: {
     posts: (root) => {
-      console.log('PAGE', root);
       return root;
     },
   }, */
@@ -78,8 +77,6 @@ const resolvers = {
   AuthenticatedQuery: {
     latest: (_, args, context, ctx) => {
       const rootValue = ctx.rootValue;
-      console.log('ctx', ctx);
-      console.log('rv', rootValue)
       return rootValue.loadContext.getPagesWithParams('/latest', args);
     },
     // unread doesn't work? returns empty array...

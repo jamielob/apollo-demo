@@ -27,7 +27,6 @@ function makeGraphQLRoute(Schema){
       rootValue: {
         field: 'value',
         setHeader(key, value) {
-          console.log('trying to set header');
           res.set(key, value);
         },
       },
