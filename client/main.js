@@ -43,7 +43,7 @@ class App extends React.Component {
     client.queryManager.mutate({
       mutation: `
         mutation {
-          login(username: "sashko", password: "mydiscoursepassword")
+          login(username: "discourse-graphql", password: "verysecure")
         }
       `,
     }).then((result) => {
@@ -158,7 +158,7 @@ class TopicLoaded extends React.Component {
   submitReply() {
     const value = this._input.getValue();
 
-    client.queryManager.mutation({
+    client.queryManager.mutate({
       mutation: `
         mutation postReply($input: Object) {
           createPost(
@@ -174,7 +174,7 @@ class TopicLoaded extends React.Component {
       `,
       variables: {
         input: {
-          
+
         }
       }
     })

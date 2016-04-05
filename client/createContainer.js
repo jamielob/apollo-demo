@@ -1,6 +1,6 @@
 import React from 'react';
-import { ApolloClient } from 'widgetizer';
-import { createNetworkInterface } from 'widgetizer/lib/src/networkInterface';
+import { ApolloClient } from 'apollo-client';
+import { createNetworkInterface } from 'apollo-client/lib/src/networkInterface';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export const client = new ApolloClient();
