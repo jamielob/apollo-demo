@@ -43,7 +43,7 @@ class App extends React.Component {
     client.queryManager.mutate({
       mutation: `
         mutation {
-          login(username: "sashko", password: "mydiscoursepassword")
+          login(username: "discourse-graphql", password: "verysecure")
         }
       `,
     }).then((result) => {
