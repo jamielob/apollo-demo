@@ -13,7 +13,6 @@ app.get('/', (req, res) => {
   res.redirect('/graphql');
 });
 
-
 app.use('/graphql', (req, res, next) => {
   return apolloServer({
     schema: Schema,
