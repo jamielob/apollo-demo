@@ -29,6 +29,8 @@ import {
   client,
 } from './createContainer';
 
+import _ from 'underscore';
+
 injectTapEventPlugin();
 
 class App extends React.Component {

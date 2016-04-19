@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApolloClient } from 'apollo-client';
+import ApolloClient from 'apollo-client';
 import { createNetworkInterface } from 'apollo-client/lib/src/networkInterface';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 

@@ -1,3 +1,5 @@
+
+const Schema = `
 # A discourse Post
 type Post {
   id: Int
@@ -123,3 +125,6 @@ schema {
   query: RootQuery
   mutation: RootMutation
 }
+`;
+
+export default Schema;
