@@ -75,19 +75,8 @@ const resolvers = {
   },
 
   AuthenticatedQuery: {
-    latest: (_, args, context) => {
-      return context.loadContext.getPagesWithParams('/latest', args);
-    },
-    // unread doesn't work? returns empty array...
-    unread: (_, args, context) => {
-      return context.loadContext.getPagesWithParams('/unread', args);
-    },
-    new: (_, args, context) => {
-      return context.loadContext.getPagesWithParams('/new', args);
-    },
-    top: (_, args, context) => {
-      const url = args.period ? `/top/${args.period}` : '/top';
-      return context.loadContext.getPagesWithParams(url, args);
+    feed(_, { type, ...args }, context){
+      return context.loadContext.getPagesWithParams(`/${type.toLowerCase()}`, args);
     },
 
     // I assume this doesn't actually work. It takes no arguments

@@ -95,6 +95,13 @@ enum TimePeriod {
   DAILY
 }
 
+enum FeedType {
+  LATEST
+  UNREAD
+  NEW
+  TOP
+}
+
 # Authenticated type for root query
 type AuthenticatedQuery {
   allPosts: [Post]
@@ -105,10 +112,7 @@ type AuthenticatedQuery {
   oneTopic(id: ID): Topic
   oneCategory(id: ID): Category
 
-  latest(page: Int, numPages: Int): PaginatedTopicList
-  unread(page: Int, numPages: Int): PaginatedTopicList
-  new(page: Int, numPages: Int): PaginatedTopicList
-  top(page: Int, numPages: Int, period: TimePeriod): PaginatedTopicList
+  feed(type: FeedType!, page: Int, numPages: Int): PaginatedTopicList
 }
 
 type RootQuery {
