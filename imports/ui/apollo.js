@@ -29,7 +29,6 @@ export const store = createStore(
 networkInterface.use([{
   applyMiddleware(request, next) {
     const currentUserToken = store.getState().loginToken;
-    console.log(store.getState());
 
     if (!currentUserToken) {
       next();

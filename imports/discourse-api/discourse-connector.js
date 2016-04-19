@@ -15,15 +15,12 @@ class DiscourseContext {
 
   // loginToken comes from context
   constructor({ loginToken }) {
-    console.log('got login token', loginToken);
     this.COOKIE_KEY = '_forum_session';
     this.TOKEN_KEY = '_t';
     this.apiRoot = API_ROOT;
     this.loginToken = loginToken;
-    console.log('token is', loginToken);
 
     this.urlDataLoader = new DataLoader((urls) => {
-      console.log('Fetching batch:', urls);
       // XXX we probably shouldn't batch requests to the backend for REST.
 
       const options = {
@@ -41,7 +38,6 @@ class DiscourseContext {
           uri: url,
           ...options,
         }).catch((err) => {
-          console.log(err);
           throw err;
         });
       }));
@@ -96,7 +92,6 @@ class DiscourseContext {
     return this.get(url).then((result) => {
       return { posts: result.post_stream.posts };
     }).catch((err) => {
-      console.log('Error fetching page', err);
       return null;
     });
   }

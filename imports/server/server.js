@@ -1,7 +1,7 @@
 import { apolloServer } from 'graphql-tools';
 import express from 'express';
-import resolveFunctions from '../discourse-api/resolvers.js';
-import Schema from '../discourse-api/schema/schema.js';
+import resolveFunctions from '../discourse-api/resolvers';
+import Schema from '../discourse-api/schema';
 import Connectors from '../discourse-api/discourse-connector';
 // imports/discourse-api/schema.gql is also used...
 
