@@ -101,7 +101,7 @@ const Topic = ({ topic, loginToken, mutate }) => (
     { topic.loading ?
       'Loading...' :
       <TopicLoaded
-        topic={topic.result.root.oneTopic}
+        topic={topic.result.oneTopic}
         loginToken={loginToken}
         mutate={mutate}
         refetch={topic.refetch} />
@@ -115,18 +115,16 @@ const TopicWithData = connect({
       topic: {
         query: `
           query getTopic ($topicId: ID) {
-            root {
-              oneTopic(id: $topicId) {
-                id
-                category_id
-                title
-                posts {
-                  pages {
-                    posts {
-                      username
-                      score
-                      cooked
-                    }
+            oneTopic(id: $topicId) {
+              id
+              category_id
+              title
+              posts {
+                pages {
+                  posts {
+                    username
+                    score
+                    cooked
                   }
                 }
               }

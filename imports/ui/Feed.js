@@ -45,7 +45,7 @@ const Feed = ({ params, feed, loading, loginToken }) => {
       { feed.loading && 'Loading...' }
       { needsLogin && <div className="needs-login">Please log in to see this page.</div> }
       { !feed.loading && !needsLogin &&
-        feed.result.root[params.type].pages.map((page) => <FeedPage page={page} />) }
+        feed.result.feed.pages.map((page) => <FeedPage page={page} />) }
     </div>
   );
 }
@@ -55,21 +55,19 @@ const FeedWithData = connect({
     return {
       feed: {
         query: `
-          query getFeed($token: String) {
-            root(token: $token) {
-              ${ownProps.params.type} {
-                pages {
-                  topics {
-                    id
-                    title
-                  }
+          query getFeed($type: FeedType!) {
+            feed(type: $type) {
+              pages {
+                topics {
+                  id
+                  title
                 }
               }
             }
           }
         `,
         variables: {
-          token: state.loginToken,
+          type: ownProps.params.type.toUpperCase(),
         }
       }
     }

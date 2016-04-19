@@ -15,6 +15,7 @@ class DiscourseContext {
 
   // loginToken comes from context
   constructor({ loginToken }) {
+    console.log('got login token', loginToken);
     this.COOKIE_KEY = '_forum_session';
     this.TOKEN_KEY = '_t';
     this.apiRoot = API_ROOT;

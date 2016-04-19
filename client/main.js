@@ -1,1 +1,1 @@
-import '/imports/ui/routes';
+import '/imports/ui';

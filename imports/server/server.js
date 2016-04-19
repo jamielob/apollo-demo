@@ -20,9 +20,16 @@ app.use('/graphql', (req, res, next) => {
     connectors: Connectors,
     graphiql: true,
     // TODO: obviously don't do this statically. take it from req...
-    context: { loginToken: 'cf2761aaa6ca305144aecdd0a323dac6'},
+    context: {
+      loginToken: req.headers.authorization
+    },
     allowUndefinedInResolve: false,
     printErrors: true,
+    formatError(error) {
+      return {
+        message: JSON.stringify(error.error),
+      }
+    },
   })(req, res, next);
 });
 
