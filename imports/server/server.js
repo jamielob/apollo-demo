@@ -13,22 +13,14 @@ app.get('/', (req, res) => {
 });
 
 
-let currentResponse;
 app.use('/graphql', (req, res, next) => {
   return apolloServer({
     schema: Schema,
     resolvers: resolveFunctions,
     graphiql: true,
-    rootValue: {
-      field: 'value',
-      setHeader(key, value) {
-        res.set(key, value);
-      },
-    },
-    formatError: (error) => ({
-      message: error.message,
-      details: error.stack,
-    }),
+    context: {},
+    allowUndefinedInResolve: false,
+    printErrors: true,
   })(req, res, next);
 });
 
