@@ -102,8 +102,7 @@ enum FeedType {
   TOP
 }
 
-# Authenticated type for root query
-type AuthenticatedQuery {
+type RootQuery {
   allPosts: [Post]
   allTopics: [Topic]
   allCategories: [Category]
@@ -115,14 +114,10 @@ type AuthenticatedQuery {
   feed(type: FeedType!, page: Int, numPages: Int): PaginatedTopicList
 }
 
-type RootQuery {
-  root(token: String): AuthenticatedQuery
-}
-
 # Mutation used for logging in to Discourse
 type RootMutation {
   login(username: String!, password: String!): String
-  createPost(token: String!, topic_id: ID!, category: ID!, raw: String!): Post
+  createPost(topic_id: ID!, category: ID!, raw: String!): Post
 }
 
 schema {

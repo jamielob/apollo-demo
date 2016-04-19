@@ -1,7 +1,3 @@
-import { DiscourseContext } from './discourse-context';
-
-const API_ROOT = 'https://try.discourse.org';
-
 // resolver for posts in Topic
 // resolvers for pages PaginatedPostsList
 // resolver for posts in PostListPage
@@ -9,7 +5,7 @@ const API_ROOT = 'https://try.discourse.org';
 const resolvers = {
   Post: {
     topic: (root, args, context) => {
-      return context.loadContext._fetchEndpoint({
+      return context.connectors.Discourse._fetchEndpoint({
         url: ({ id }) => `/t/${id}`,
       }, { id: root.topic_id });
     },
@@ -22,7 +18,7 @@ const resolvers = {
     }), */
     category: () => { throw new Error('No endpoint defined to fetch one cat'); },
     posts: (root, args, context) => {
-      return context.loadContext._fetchEndpoint({
+      return context.connectors.Discourse._fetchEndpoint({
         url: ({ id }) => `/t/${id}.json`,
         map: (data) => ({ posts: data.post_stream.stream, topicId: data.id }),
       }, { id: root.id });
@@ -33,7 +29,7 @@ const resolvers = {
   PaginatedPostList: {
     pages: ({ posts, topicId }, args, context) => {
       // XXX I don't like having to pass the topic id through. it's messy
-      return context.loadContext.getPaginatedPosts(posts, args, topicId);
+      return context.connectors.Discourse.getPaginatedPosts(posts, args, topicId);
     },
   },
 
@@ -45,10 +41,10 @@ const resolvers = {
 
   Category: {
     latest_topics: (category, args, context) => {
-      return context.loadContext.getPagesWithParams(`/c/${category.id}`, args);
+      return context.connectors.Discourse.getPagesWithParams(`/c/${category.id}`, args);
     },
     new_topics: (category, args, context) => {
-      return context.loadContext.getPagesWithParams(
+      return context.connectors.Discourse.getPagesWithParams(
         `/c/${category.id}/l/new`,
         args,
       );
@@ -74,24 +70,24 @@ const resolvers = {
     },
   },
 
-  AuthenticatedQuery: {
+  RootQuery: {
     feed(_, { type, ...args }, context){
-      return context.loadContext.getPagesWithParams(`/${type.toLowerCase()}`, args);
+      return context.connectors.Discourse.getPagesWithParams(`/${type.toLowerCase()}`, args);
     },
 
     // I assume this doesn't actually work. It takes no arguments
     allPosts: (_, args, context) => {
-      return context.loadContext._fetchEndpoint({
+      return context.connectors.Discourse._fetchEndpoint({
         url: '/posts',
         map: (data) => data.latest_posts,
       }, args);
     },
     /* allTopics: (_, args, { context }) => {
-      context.loadContext._fetchEndpoint(info.indexEndpoint, args);
+      context.connectors.Discourse._fetchEndpoint(info.indexEndpoint, args);
     }, */
     // I assume this doesn't actually work. It takes no arguments ...
     allCategories: (_, args, context) => {
-      return context.loadContext._fetchEndpoint({
+      return context.connectors.Discourse._fetchEndpoint({
         url: '/categories',
         map: (data) => data.category_list.categories,
       }, args);
@@ -101,12 +97,12 @@ const resolvers = {
     },
 
     onePost: (_, args, context) => {
-      return context.loadContext._fetchEndpoint({
+      return context.connectors.Discourse._fetchEndpoint({
         url: ({ id }) => `/posts/${id}`,
       }, args);
     },
     oneTopic: (_, args, context) => {
-      return context.loadContext._fetchEndpoint({
+      return context.connectors.Discourse._fetchEndpoint({
         url: ({ id }) => `/t/${id}`,
       }, args);
     },
@@ -116,34 +112,24 @@ const resolvers = {
     // oneCategory: null, // this isn't actually defined, I think.
   },
 
-  RootQuery: {
-    root: (_, args, context) => {
-      context.loadContext = new DiscourseContext({
-        loginToken: args.token,
-        apiRoot: API_ROOT,
-      });
-      return {};
-    },
-  },
-
   // TODO this is waaaaay too long.
   RootMutation: {
     login: (_, args, context) => {
-      context.loadContext = new DiscourseContext({
+      /* context.connectors.Discourse = new DiscourseContext({
         apiRoot: API_ROOT,
-      });
+      }); */
 
-      return context.loadContext.getLoginToken(args.username, args.password);
+      return context.connectors.Discourse.getLoginToken(args.username, args.password);
     },
 
     createPost: (_, args, context) => {
-      context.loadContext = new DiscourseContext({
+      /* context.connectors.Discourse = new DiscourseContext({
         loginToken: args.token,
         apiRoot: API_ROOT,
       });
 
-      delete args.token;
-      return context.loadContext.createPost(args);
+      delete args.token; */
+      return context.connectors.Discourse.createPost(args);
     },
   },
 };

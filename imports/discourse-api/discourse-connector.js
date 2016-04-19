@@ -8,14 +8,18 @@ import {
   isArray,
 } from 'lodash';
 
-// Encapsulates session management, dataloader caching, and pagination
-export class DiscourseContext {
+const API_ROOT = 'https://try.discourse.org';
 
-  constructor({ loginToken, apiRoot }) {
+// Encapsulates session management, dataloader caching, and pagination
+class DiscourseContext {
+
+  // loginToken comes from context
+  constructor({ loginToken }) {
     this.COOKIE_KEY = '_forum_session';
     this.TOKEN_KEY = '_t';
-    this.apiRoot = apiRoot;
+    this.apiRoot = API_ROOT;
     this.loginToken = loginToken;
+    console.log('token is', loginToken);
 
     this.urlDataLoader = new DataLoader((urls) => {
       console.log('Fetching batch:', urls);
@@ -210,3 +214,5 @@ function serializeParamsForRails(paramsObj) {
 
   return segments.join('&');
 }
+
+export default { Discourse: DiscourseContext };
