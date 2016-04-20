@@ -25,11 +25,6 @@ app.use('/graphql', (req, res, next) => {
     },
     allowUndefinedInResolve: false,
     printErrors: true,
-    formatError(error) {
-      return {
-        message: JSON.stringify(error.error),
-      }
-    },
   })(req, res, next);
 });
 

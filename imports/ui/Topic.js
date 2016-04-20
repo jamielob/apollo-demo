@@ -38,9 +38,8 @@ class TopicLoaded extends React.Component {
 
     this.props.mutate({
       mutation: `
-        mutation postReply($token: String!, $topic_id: ID!, $category_id: ID!, $raw: String!) {
+        mutation postReply($topic_id: ID!, $category_id: ID!, $raw: String!) {
           createPost(
-            token: $token
             topic_id: $topic_id
             category: $category_id
             raw: $raw
@@ -51,7 +50,6 @@ class TopicLoaded extends React.Component {
         }
       `,
       variables: {
-        token: this.props.loginToken,
         topic_id: this.props.topic.id,
         category_id: this.props.topic.category_id,
         raw: value,
