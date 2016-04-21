@@ -12,47 +12,14 @@ import {
   List,
   ListItem,
   AppBar,
-  FlatButton,
   IconButton,
-  RaisedButton,
-  TextField,
 } from 'material-ui';
 
 import ActionHome from 'material-ui/lib/svg-icons/action/home';
 
+import Login from './Login.js';
+
 class App extends React.Component {
-  handleLoginClick() {
-    this.props.mutate({
-      mutation: `
-        mutation {
-          login(username: "graphql", password: "verysecure")
-        }
-      `,
-    }).then((result) => {
-      this.props.dispatch({
-        type: 'SET_LOGIN_TOKEN',
-        loginToken: result.data.login,
-      });
-    }).catch((err) => {
-      alert(err);
-    });
-  }
-
-  handleLogoutClick() {
-    this.props.dispatch({
-      type: 'SET_LOGIN_TOKEN',
-      loginToken: null,
-    });
-  }
-
-  renderLoginButton() {
-    if (this.props.loginToken) {
-      return <FlatButton label="Logout" onClick={this.handleLogoutClick.bind(this)} />;
-    } else {
-      return <FlatButton label="Login" onClick={this.handleLoginClick.bind(this)} />
-    }
-  }
-
   renderHomeButton() {
     return (
       <IconButton onClick={handleRouteChange.bind(null, 'latest')}>
@@ -66,7 +33,7 @@ class App extends React.Component {
       <div>
         <AppBar
           title="Discourse Meta"
-          iconElementRight={this.renderLoginButton()}
+          iconElementRight={<Login {...this.props}/>}
           iconElementLeft={this.renderHomeButton()}
         />
         { this.props.children }

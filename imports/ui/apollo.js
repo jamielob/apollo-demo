@@ -7,7 +7,7 @@ export const client = new ApolloClient({
   networkInterface,
 });
 
-function loginToken(previousState = 'cf2761aaa6ca305144aecdd0a323dac6', action) {
+function loginToken(previousState = null, action) {
   if (action.type === 'SET_LOGIN_TOKEN') {
     return action.loginToken;
   }
