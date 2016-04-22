@@ -13,6 +13,7 @@ import {
   IconButton,
   RaisedButton,
   TextField,
+  CircularProgress
 } from 'material-ui';
 
 const TopicListItem = ({ topic }) => (
@@ -42,8 +43,8 @@ const Feed = ({ params, feed, loading, loginToken }) => {
         <Tab label="Unread" value={'unread'} />
         <Tab label="Top" value={'top'} />
       </Tabs>
-      { feed.loading && 'Loading...' }
       { needsLogin && <div className="needs-login">Please log in to see this page.</div> }
+      { feed.loading && <CircularProgress /> }
       { !feed.loading && !needsLogin &&
         feed.result.feed.pages.map((page) => <FeedPage page={page} />) }
     </div>

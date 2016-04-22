@@ -11,6 +11,7 @@ import {
   IconButton,
   RaisedButton,
   TextField,
+  CircularProgress
 } from 'material-ui';
 
 function postHTML(post) {
@@ -97,7 +98,7 @@ class TopicLoaded extends React.Component {
 const Topic = ({ topic, loginToken, mutate }) => (
   <div>
     { topic.loading ?
-      'Loading...' :
+      <CircularProgress /> :
       <TopicLoaded
         topic={topic.result.oneTopic}
         loginToken={loginToken}
