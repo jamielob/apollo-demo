@@ -101,8 +101,13 @@ class DiscourseContext {
       return endpoint.fetch(args, this);
     }
 
-    return this.urlDataLoader.load(this.apiRoot + endpoint.url(args))
-      .then(endpoint.map || identity);
+    if (typeof endpoint.url === 'function') {
+      return this.urlDataLoader.load(this.apiRoot +  endpoint.url(args))
+        .then(endpoint.map || identity);
+    } else {
+      return this.urlDataLoader.load(this.apiRoot +  endpoint.url)
+        .then(endpoint.map || identity);
+    }
   }
 
   get(url) {
